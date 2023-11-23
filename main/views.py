@@ -1,5 +1,6 @@
 import datetime
-from django.http import HttpResponseNotFound, HttpResponseRedirect
+import json
+from django.http import HttpResponseNotFound, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
@@ -115,7 +116,7 @@ def logout_user(request):
     return response
 
 def get_product_json(request):
-    product_item = Product.objects.all()
+    product_item = Product.objects.filter(user=request.user)
     return HttpResponse(serializers.serialize('json', product_item))
 
 @csrf_exempt
